@@ -1,0 +1,44 @@
+apply plugin: 'idea'
+apply plugin: 'java'
+
+version = '0.0.1'
+
+compileJava {
+    sourceCompatibility = '1.8'
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+       dirs 'libs'
+    }
+    maven {
+        url "http://nexus.theyeticave.net/content/repositories/pub_releases"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main']
+        }
+    }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'MCEX Plugin',
+                   'Implementation-Version': version
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+dependencies {
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.+'
+    compile group: 'com.mchange', name: 'c3p0', version: '0.9.5.1'
+    compile name: 'spigot-api-1.8.8'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.8.11.2'
+}
+
+buildDir = 'bin'

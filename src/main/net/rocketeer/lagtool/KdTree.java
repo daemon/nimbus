@@ -119,7 +119,13 @@ public class KdTree<T> {
     int index = dim % this.nd;
     List<T> elements = new LinkedList<>();
     int[] currPoint = node.point;
-    if (a[index] <= currPoint[index] && currPoint[index] <= b[index])
+    boolean found = true;
+    for (int i = 0; i < a.length; ++i)
+      if (a[i] > currPoint[i] || currPoint[i] > b[i]) {
+        found = false;
+        break;
+      }
+    if (found)
       elements.add(node.data);
     if (node.left != null && a[index] <= currPoint[index])
       elements.addAll(this.range(a, b, node.left, dim + 1));

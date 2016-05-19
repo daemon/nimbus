@@ -9,7 +9,7 @@ public class LagToolPlugin extends JavaPlugin {
   public void onEnable() {
     this.saveDefaultConfig();
     Config config = new Config();
-    InferCommandExecutor inferCommand = new InferCommandExecutor();
+    InferCommandExecutor inferCommand = new InferCommandExecutor(this);
     CollectCommandExecutor collectCommand = new CollectCommandExecutor(this, config);
     collectCommand.addObserver(inferCommand);
     this.getCommand("ltcollect").setExecutor(collectCommand);

@@ -27,6 +27,10 @@ public class PositionLagSnapshot {
     return this.clusterNo;
   }
 
+  public void resetClusterNo() {
+    this.clusterNo = -1;
+  }
+
   public void setClusterNo(int clusterNo) {
     this.clusterNo = clusterNo;
   }

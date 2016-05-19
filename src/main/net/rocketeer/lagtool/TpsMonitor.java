@@ -10,7 +10,7 @@ public class TpsMonitor extends Observable {
   private final JavaPlugin plugin;
   private volatile boolean running = false;
   private BukkitTask task;
-  private double lastLoggedTps;
+  private double lastLoggedTps = 20;
 
   public TpsMonitor(JavaPlugin plugin) {
     this.plugin = plugin;
@@ -28,12 +28,14 @@ public class TpsMonitor extends Observable {
     if (this.running)
       return;
     this.running = true;
-    long a = System.currentTimeMillis();
+    final long[] a = {System.currentTimeMillis()};
     this.task = Bukkit.getScheduler().runTaskTimer(this.plugin, () -> {
-      this.lastLoggedTps = 20.0 * 1000.0 / (System.currentTimeMillis() - a);
-      this.notifyObservers(this.lastLoggedTps);
+      long b = System.currentTimeMillis();
+      this.lastLoggedTps = 1000.0 / ((b - a[0]) / 20.0);
       this.setChanged();
-    }, 0, 20);
+      this.notifyObservers(this.lastLoggedTps);
+      a[0] = b;
+    }, 20, 20);
   }
 
   public void stop() {

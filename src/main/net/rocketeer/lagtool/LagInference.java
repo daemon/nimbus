@@ -5,6 +5,7 @@ import org.bukkit.World;
 import java.util.*;
 
 public class LagInference {
+  public enum Metric { LOWER_CI, UPPER_CI, MEAN }
   private final static int epsilon = 16 * 8;
   private final long minPoints;
   private final Map<World, ClusterGraph> worldClusterMap = new HashMap<>();
@@ -19,7 +20,9 @@ public class LagInference {
     worldKdTrees.forEach((world, kdTree) -> {
       Map<PositionLagSnapshot, List<PositionLagSnapshot>> adjList = new IdentityHashMap<>();
       int maxCluster = 0;
-      for (PositionLagSnapshot ss : kdTree.toList()) {
+      List<PositionLagSnapshot> kdTreeList = kdTree.toList();
+      kdTreeList.forEach(PositionLagSnapshot::resetClusterNo);
+      for (PositionLagSnapshot ss : kdTreeList) {
         int[] lowerBound = new int[]{ ss.x - epsilon, ss.z - epsilon };
         int[] upperBound = new int[]{ ss.x + epsilon, ss.z + epsilon };
         List<PositionLagSnapshot> withinRange = kdTree.range(lowerBound, upperBound);
@@ -63,6 +66,17 @@ public class LagInference {
       ClusterGraph clusterGraph = new ClusterGraph(adjList);
       this.worldClusterMap.put(world, clusterGraph);
     });
+  }
+
+  public List<Cluster> worstAscending(Metric metric, World world) {
+    List<Cluster> snapshots = this.clustersOf(world);
+    if (metric == Metric.LOWER_CI)
+      Collections.sort(snapshots, (a, b) -> (int) (b.ci95()[0] * 100 - a.ci95()[0] * 100));
+    else if (metric == Metric.UPPER_CI)
+      Collections.sort(snapshots, (a, b) -> (int) (b.ci95()[1] * 100 - a.ci95()[1] * 100));
+    else
+      Collections.sort(snapshots, (a, b) -> (int) (b.mean * 100 - a.mean * 100));
+    return snapshots;
   }
 
   /**

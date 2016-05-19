@@ -61,15 +61,18 @@ public class KdTree<T> {
     Node root = new Node(medianHeuristic, this.getter.point(medianHeuristic));
     List<T> smaller = new LinkedList<>();
     List<T> larger = new LinkedList<>();
-    for (T point : points)
+    for (T point : points) {
+      if (point == medianHeuristic)
+        continue;
       if (this.getter.point(point)[index] < this.getter.point(medianHeuristic)[index])
         smaller.add(point);
       else
         larger.add(point);
+    }
     if (!smaller.isEmpty())
       root.left(this.construct(smaller, dim + 1));
     if (!larger.isEmpty())
-      root.right(this.construct(smaller, dim + 1));
+      root.right(this.construct(larger, dim + 1));
     return root;
   }
 

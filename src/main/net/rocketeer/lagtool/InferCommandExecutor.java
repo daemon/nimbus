@@ -3,6 +3,7 @@ package net.rocketeer.lagtool;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -22,6 +23,8 @@ public class InferCommandExecutor implements Observer, CommandExecutor {
     }
 
     LagInference inference = LagInference.infer(profiles);
+    Player p = (Player) sender;
+    inference.clustersOf(p.getWorld()).forEach(cluster -> p.sendMessage(Arrays.toString(cluster.centroid())));
     return true;
   }
 

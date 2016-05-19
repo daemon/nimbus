@@ -51,18 +51,13 @@ public class CollectCommandExecutor extends Observable implements CommandExecuto
         snapshots.get(p.getWorld()).add(new PositionLagSnapshot(x, z, tps));
       }
     }, 0, 20);
-    final Map<World, KdTree<PositionLagSnapshot>> kdtrees = new HashMap<>();
     Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
       task.cancel();
-      snapshots.forEach((world, snaps) -> {
-        KdTree<PositionLagSnapshot> kdtree = new KdTree<>(snaps, new PositionLagSnapshot.Getter());
-        kdtrees.put(world, kdtree);
-      });
       --this.monCount; // TODO sync
       if (this.monCount == 0)
         this.monitor.stop();
       setChanged();
-      notifyObservers(new LagProfile(durationTicks, kdtrees));
+      notifyObservers(new LagProfile(durationTicks, snapshots));
       Bukkit.getScheduler().runTask(this.plugin, () -> sender.sendMessage("Completed profile."));
     }, durationTicks);
     return true;

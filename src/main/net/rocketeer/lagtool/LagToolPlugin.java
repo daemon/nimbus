@@ -9,8 +9,11 @@ public class LagToolPlugin extends JavaPlugin {
   public void onEnable() {
     this.saveDefaultConfig();
     Config config = new Config();
-    this.getCommand("ltcollect").setExecutor(new CollectCommandExecutor(this, config));
-    this.getCommand("ltinfer").setExecutor(new InferCommandExecutor(config));
+    InferCommandExecutor inferCommand = new InferCommandExecutor();
+    CollectCommandExecutor collectCommand = new CollectCommandExecutor(this, config);
+    collectCommand.addObserver(inferCommand);
+    this.getCommand("ltcollect").setExecutor(collectCommand);
+    this.getCommand("ltinfer").setExecutor(inferCommand);
   }
 
   @Override

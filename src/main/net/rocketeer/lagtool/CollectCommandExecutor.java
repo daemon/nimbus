@@ -31,7 +31,7 @@ public class CollectCommandExecutor extends Observable implements CommandExecuto
       return false;
     long durationTicks;
     try {
-      durationTicks = (long) Double.parseDouble(args[0]) * 60 * 20;
+      durationTicks = (long) (Double.parseDouble(args[0]) * 60 * 20);
     } catch (NumberFormatException e) {
       return false;
     }
@@ -39,8 +39,8 @@ public class CollectCommandExecutor extends Observable implements CommandExecuto
     if (this.monCount == 0)
       this.monitor.start();
     ++this.monCount;
-
     final Map<World, List<PositionLagSnapshot>> snapshots = new HashMap<>();
+    sender.sendMessage("Starting profile...");
     final BukkitTask task = Bukkit.getScheduler().runTaskTimer(this.plugin, () -> {
       double tps = this.monitor.tps();
       for (Player p : Bukkit.getOnlinePlayers()) {
@@ -58,8 +58,13 @@ public class CollectCommandExecutor extends Observable implements CommandExecuto
         KdTree<PositionLagSnapshot> kdtree = new KdTree<>(snaps, new PositionLagSnapshot.Getter());
         kdtrees.put(world, kdtree);
       });
-      notifyObservers(report);
+      --this.monCount; // TODO sync
+      if (this.monCount == 0)
+        this.monitor.stop();
       setChanged();
+      notifyObservers(new LagProfile(durationTicks, kdtrees));
+      Bukkit.getScheduler().runTask(this.plugin, () -> sender.sendMessage("Completed profile."));
     }, durationTicks);
+    return true;
   }
 }

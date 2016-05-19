@@ -1,0 +1,14 @@
+name: magma
+main: net.rocketeer.lagtool.LagToolPlugin
+version: 0.0.1
+commands:
+    ltinfer:
+        description: Try to detect laggy clusters based on profiles
+        usage: '/ltinfer <profile 1> <profile 2> ... <profile n>'
+        permission: lagtool
+        permission-message: No permission.
+    ltcollect:
+        description: Collect data for inference
+        usage: '/ltcollect <minutes>'
+        permission: lagtool
+        permission-message: No permission.

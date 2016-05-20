@@ -19,6 +19,7 @@ public class CollectCommandExecutor extends Observable implements CommandExecuto
 {
   private final LagToolPlugin.Config config;
   private final TpsMonitor monitor;
+  private int profileNo = 0;
   private int monCount = 0;
   private final JavaPlugin plugin;
 
@@ -52,7 +53,8 @@ public class CollectCommandExecutor extends Observable implements CommandExecuto
           snapshots.put(p.getWorld(), new LinkedList<>());
         int x = p.getLocation().getBlockX();
         int z = p.getLocation().getBlockZ();
-        snapshots.get(p.getWorld()).add(new PositionLagSnapshot(x, z, tps));
+        int y = p.getLocation().getBlockY();
+        snapshots.get(p.getWorld()).add(new PositionLagSnapshot(x, y, z, tps));
       }
     }, 0, 20);
     Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
@@ -62,7 +64,7 @@ public class CollectCommandExecutor extends Observable implements CommandExecuto
         this.monitor.stop();
       setChanged();
       notifyObservers(new LagProfile(durationTicks, snapshots));
-      Bukkit.getScheduler().runTask(this.plugin, () -> sender.sendMessage("Completed profile."));
+      Bukkit.getScheduler().runTask(this.plugin, () -> sender.sendMessage("Completed profile #" + this.profileNo++));
     }, durationTicks);
     return true;
   }

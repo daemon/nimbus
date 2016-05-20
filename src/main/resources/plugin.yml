@@ -12,3 +12,8 @@ commands:
         usage: '/ltcollect <minutes>'
         permission: lagtool
         permission-message: No permission.
+    ltview:
+        description: View inference data
+        usage: '/ltview'
+        permission: lagtool
+        permission-message: No permission.

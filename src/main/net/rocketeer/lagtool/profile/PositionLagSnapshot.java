@@ -6,12 +6,14 @@ import java.util.Arrays;
 
 public class PositionLagSnapshot {
   public final int x;
+  public final int y;
   public final int z;
   public final float tps;
   private int clusterNo = -1;
 
-  public PositionLagSnapshot(int x, int z, double tps) {
+  public PositionLagSnapshot(int x, int y, int z, double tps) {
     this.x = x;
+    this.y = y;
     this.z = z;
     this.tps = (float) tps;
   }
@@ -23,7 +25,7 @@ public class PositionLagSnapshot {
   /**
    * The sub-cluster number; each cluster may have multiple sub-cluster numbers, but distinct clusters have distinct
    * sub-cluster number. Used internally for reducing spanning tree size.
-   * @return the sub-clsuter number
+   * @return the sub-cluster number
    */
   public int clusterNo() {
     return this.clusterNo;

@@ -1,5 +1,9 @@
-package net.rocketeer.lagtool;
+package net.rocketeer.lagtool.command;
 
+import net.rocketeer.lagtool.LagToolPlugin;
+import net.rocketeer.lagtool.profile.LagProfile;
+import net.rocketeer.lagtool.profile.PositionLagSnapshot;
+import net.rocketeer.lagtool.profile.TpsMonitor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;

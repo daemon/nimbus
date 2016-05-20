@@ -1,5 +1,7 @@
-package net.rocketeer.lagtool;
+package net.rocketeer.lagtool.command;
 
+import net.rocketeer.lagtool.profile.LagInference;
+import net.rocketeer.lagtool.profile.LagProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

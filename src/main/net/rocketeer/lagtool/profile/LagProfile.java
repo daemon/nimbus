@@ -1,4 +1,4 @@
-package net.rocketeer.lagtool;
+package net.rocketeer.lagtool.profile;
 
 import org.bukkit.World;
 

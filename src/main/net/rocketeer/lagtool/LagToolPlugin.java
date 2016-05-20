@@ -1,6 +1,7 @@
 package net.rocketeer.lagtool;
 
-import org.bukkit.Bukkit;
+import net.rocketeer.lagtool.command.CollectCommandExecutor;
+import net.rocketeer.lagtool.command.InferCommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 

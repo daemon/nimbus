@@ -1,4 +1,6 @@
-package net.rocketeer.lagtool;
+package net.rocketeer.lagtool.profile;
+
+import net.rocketeer.lagtool.KdTree;
 
 import java.util.Arrays;
 
